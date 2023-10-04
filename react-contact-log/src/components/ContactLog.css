@@ -1,0 +1,13 @@
+table, th, td {
+    border: 1px solid black;
+    border-radius: 1px;
+    width: 40rem;
+    font-family: Source Code Pro;
+    color: white;
+    justify-content: center;
+}
+
+th {
+    display: flex;
+
+}
