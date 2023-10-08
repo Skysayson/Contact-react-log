@@ -1,36 +1,49 @@
-import "./ContactLog.css";
+import axios from "axios";
 import React, { useEffect, useState } from "react";
+import "./ContactLog.css";
 
-function ContactLog() 
-{
-  const [records, setRecords] = useState([]);
+function ContactLog() {
+  const [contacts, setContacts] = useState([]);
 
   useEffect(() => {
-      fetch('https://todolist-sample.000webhostapp.com/read.php')
-      .then(response => response.json())
-      .then(data => setRecords(data))
-      .then(err => console.log(err))
-  }, [])
+    const apiUrl = "http://localhost/CONTACT-LOG-REACT/another-react-log/react-contact-log/src/php/Loadcontacts.php"
+
+    axios
+      .get(apiUrl)
+      .then((response) => {
+        setContacts(response.data);
+      })
+      .catch((error) => {
+        console.error("Error fetching data:", error);
+      });
+  }, []);
 
   return (
     <div className="">
-      <form method="POST">
-        <div className="">
-          <table className="flex flex-col w-auto border border-black rounded-x bg-gray-500 text-sm text-left text-gray-500 dark:text-gray-400">
-            <tr className="flex text-white">
-              <th>Lastname</th>
-              <th>Firstname</th>
-              <th>Email</th>
-              <th>Contact#</th>
-            </tr>
+      <div className="">
+        <table className="flex flex-col w-auto border border-black rounded-x bg-[#17d071] text-sm text-left text-gray-500 dark:text-gray-400">
+          <tr className="flex text-white">
+            <th>Lastname</th>
+            <th>Firstname</th>
+            <th>Email</th>
+            <th>Contact#</th>
+          </tr>
+          {contacts.length === 0 ? (
             <tr>
-              {records.map((list, index)=> (
-                <td key={index}>{list.firstName}</td>
-              ))}
+              <td>No contacts available.</td>
             </tr>
-          </table>
-        </div>
-      </form>
+          ) : (
+            contacts.map((contact) => (
+              <tr key={contact.email} className="flex text-white">
+                <td>{contact.lastName}</td>
+                <td>{contact.firstName}</td>
+                <td>{contact.email}</td>
+                <td>{contact.contact}</td>
+              </tr>
+            ))
+          )}
+        </table>
+      </div>
     </div>
   );
 }
